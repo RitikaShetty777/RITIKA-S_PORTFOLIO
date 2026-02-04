@@ -1,0 +1,211 @@
+/* ===========================================================================
+   PROJECTS — TUNED 3D CIRCULAR CAROUSEL (Balanced size, spacing, visibility)
+============================================================================== */
+
+/* --- SECTION SPACING (FIX OVERLAP ISSUE) --- */
+section[aria-label="Projects"] {
+  margin-top: 0.75rem;     /* same rhythm as other sections */
+  margin-bottom: 4rem; /* ensures clear gap before Publications */
+}
+
+.project-title {
+  margin-top: 0;
+  margin-bottom: 0.75rem;  /* small gap before grid */
+  color: #a78bfa;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
+}
+
+/* --- 3D SCENE CONTAINER (CONTROLLED HEIGHT) --- */
+.carousel {
+  perspective: 1000px;
+  height: 320px;        /* reduced so it fits cleanly */
+  position: relative;
+}
+
+/* --- ROTATING RING --- */
+.projects-grid {
+  position: relative;
+  width: 100%;
+  height: 280px;        /* reduced to avoid overlap */
+  margin: 0 auto;
+
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- PROJECT CARD BASE --- */
+.project-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 260px;
+  height: 360px;        /* increased so ALL content fits */
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 1.25rem;
+  border-radius: 16px;
+
+  background: linear-gradient(180deg, #3b1d5f, #241238);
+
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  translate: -50% -50%;
+
+  box-shadow:
+    0 14px 34px rgba(88, 28, 135, 0.45),
+    inset 0 0 20px rgba(167, 139, 250, 0.12);
+
+  opacity: 0.88;
+
+}
+
+/* --- TRUE CIRCULAR DEPTH WITH VISIBLE GAPS --- */
+
+.project-card {
+  opacity: 0.88; /* uniform opacity like the video */
+}
+
+/* Front */
+.project-card:nth-child(1) {
+  transform: rotateY(0deg) translateZ(190px);
+}
+
+/* Right */
+.project-card:nth-child(2) {
+  transform: rotateY(60deg) translateZ(180px);
+}
+
+/* Back-right */
+.project-card:nth-child(3) {
+  transform: rotateY(120deg) translateZ(170px);
+}
+
+/* Back */
+.project-card:nth-child(4) {
+  transform: rotateY(180deg) translateZ(165px);
+}
+
+/* Back-left */
+.project-card:nth-child(5) {
+  transform: rotateY(240deg) translateZ(170px);
+}
+
+/* Left */
+.project-card:nth-child(6) {
+  transform: rotateY(300deg) translateZ(180px);
+}
+
+/* --- TEXT RULES --- */
+.project-card h3 {
+  color: #a78bfa;
+  text-shadow: 0 0 8px rgba(167, 139, 250, 0.7);
+}
+
+.project-card p {
+  color: #ffffff;
+  margin-top: 0.5rem;
+}
+
+/* --- GITHUB LINK FIXED INSIDE CARD --- */
+.project-link {
+  margin-top: auto;        /* anchors to bottom */
+  padding-top: 0.75rem;
+
+  color: #c4b5fd;
+  text-shadow: 0 0 8px rgba(196, 181, 253, 0.7);
+  text-decoration: none;
+}
+
+.project-link:hover {
+  text-shadow: 0 0 14px rgba(196, 181, 253, 0.9);
+}
+
+@media (max-width: 768px) {
+
+  /* ================================
+     PROJECT SECTION – MOBILE FIX
+     ================================ */
+
+  section[aria-label="Projects"] {
+    margin-top: 2rem;
+    margin-bottom: 10rem;
+  }
+
+  /* Push grid DOWN from title */
+
+  .project-title {
+    margin-bottom: 1rem;
+  }
+
+  /* MOBILE GRID: FULL HEIGHT + HORIZONTAL SLIDER */
+  .projects-grid {
+    display: grid;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    width: 100%;
+    height: 10rem auto;                 /* 🔑 allow full card height */
+
+    transform: none !important;
+
+    overflow-x: auto;
+    overflow-y: visible;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    gap: 2rem;
+
+    margin: 0 auto 2rem;
+
+    align-items: stretch;
+
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increases minimum size of items */
+   
+    padding: 2rem;
+  }
+
+  /* ONE FULL CARD PER VIEW */
+  .project-card {
+    position: relative;
+    transform: none !important;
+
+    flex: 0 0 100%;               /* 🔑 one card per screen */
+    max-width: 100%;
+
+    min-height: 920px;            /* 🔑 fixes clipping */
+    height: 500px;
+
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    scroll-snap-align: center;
+
+    opacity: 1;
+  }
+
+  /* Keep GitHub link at bottom */
+  .project-link {
+    margin-top: auto;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Hide scrollbar */
+  .projects-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .projects-grid {
+      scroll-snap-type: none;
+    }
+  }
+}
