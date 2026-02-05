@@ -65,3 +65,51 @@ When mobile styles disabled transforms, the container height collapsed.
 - Enabled horizontal scroll / snap behavior
 
 This ensured full card visibility while preserving desktop behavior.
+
+## 4. AI Prompt Documentation to refine 3D Carousel Development
+
+3D Carousel Layout Design:
+You are a Senior Frontend Engineer specializing in CSS 3D transforms and React UI animation patterns.
+
+Transform an existing React projects grid into a 3D circular carousel using:
+- rotateY
+- translateZ
+- perspective
+- transform-style: preserve-3d
+
+Constraints:
+- Do not change JSX structure
+- Maintain accessibility
+- Keep performance optimized
+- Ensure smooth rotation
+
+Interactive Carousel Rotation:
+Implement click-based rotation for a 3D carousel using React hooks.
+
+Requirements:
+- One click rotates one project
+- Use useRef and useEffect only
+- Avoid external libraries
+- Preserve component structure
+- Maintain smooth snapping animation
+
+Responsive Mobile Adaptation:
+Disable 3D transforms on mobile screens and implement scroll snapping.
+
+Requirements:
+- Show one project card at a time
+- Horizontal swipe interaction
+- Maintain centered layout
+- Preserve desktop 3D behavior
+- Respect prefers-reduced-motion
+
+Accessibility and Performance Refinement:
+Ensure the carousel respects accessibility and performance guidelines.
+
+Requirements:
+- Maintain keyboard interaction
+- Support reduced motion preferences
+- Avoid heavy animations
+
+
+
