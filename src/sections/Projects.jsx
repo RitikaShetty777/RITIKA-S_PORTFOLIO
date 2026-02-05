@@ -1,46 +1,137 @@
 import { useEffect, useRef } from "react";
 import "../styles/projects.css";
 
+/* =====================================
+   PROJECT DATA (Reviewer Fix Applied)
+   Refactored into scalable array
+===================================== */
+
+const projectsData = [
+  {
+    title: "Abstractive-Summary",
+    description:
+      "Developed an AI-powered text summarization tool using BART, capable of generating concise, human-readable summaries from long documents.",
+    link: "https://ritikashetty777.github.io/Abstractive-Summary/",
+  },
+
+  {
+    title: "AI-Embedding-of-History",
+    description:
+      "Lightweight semantic search engine built using embeddings, MongoDB vector search, FastAPI, and frontend UI integration.",
+    link: "https://ritikashetty777.github.io/AI-Embedding-of-History/",
+  },
+
+  {
+    title:
+      "BlueMesh-Optimized-Sensor-Network-For-Reliable-Pipeline-Fault-Detection",
+    description:
+      "AI-driven IoT system for pipeline leak detection using acoustic sensors, YOLOv5 vision and real-time fault alerting.",
+    link:
+      "https://ritikashetty777.github.io/BlueMesh-Optimized-Sensor-Network-For-Reliable-Pipeline-Fault-Detection-/",
+  },
+
+  {
+    title: "Skinntel-AI",
+    description:
+      "System to detect early skin disease patterns using image preprocessing and feature extraction techniques.",
+    link: "https://ritikashetty777.github.io/SKINNTEL-AI/",
+  },
+
+  {
+    title: "MLP_Face_Recognition",
+    description:
+      "Face recognition system using PCA, LDA and Multi-Layer Perceptron neural networks for feature extraction.",
+    link:
+      "https://ritikashetty777.github.io/MLP_Face_Recognition_/",
+  },
+
+  {
+    title: "Cooksy-recipe-app",
+    description:
+      "Recipe sharing platform allowing users to explore, create and share cooking experiences with community interaction.",
+    link: "https://ritikashetty777.github.io/Cooksy-recipe-app/",
+  },
+];
+
+/* =====================================
+   COMPONENT
+===================================== */
+
 export default function Projects() {
   const gridRef = useRef(null);
   const indexRef = useRef(0);
 
   useEffect(() => {
-  const grid = gridRef.current;
-  if (!grid) return;
+    const grid = gridRef.current;
+    if (!grid) return;
 
-  const cards = grid.querySelectorAll(".project-card");
-  const total = cards.length;
-  if (!total) return;
+    const total = projectsData.length;
+    const step = 360 / total;
 
-  const step = 360 / total;
+    let startX = 0;
 
-  const rotate = () => {
-    grid.style.transform = `rotateY(${-indexRef.current * step}deg)`;
-  };
+    /* ---------- Rotate Function ---------- */
+    const rotate = () => {
+      grid.style.transform = `rotateY(${-indexRef.current * step}deg)`;
+    };
 
-  const handleClick = (e) => {
-    const rect = grid.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
+    /* ---------- Click Navigation ---------- */
+    const handleClick = (event) => {
+      const rect = grid.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const midpoint = rect.width / 2;
 
-    // click left half → rotate left
-    if (clickX < rect.width / 2) {
-      indexRef.current =
-        (indexRef.current - 1 + total) % total;
-    } 
-    // click right half → rotate right
-    else {
-      indexRef.current =
-        (indexRef.current + 1) % total;
-    }
+      // Left side click → Previous project
+      if (clickX < midpoint) {
+        indexRef.current =
+          (indexRef.current - 1 + total) % total;
+      }
 
-    rotate();
-  };
+      // Right side click → Next project
+      else {
+        indexRef.current =
+          (indexRef.current + 1) % total;
+      }
 
-  grid.addEventListener("click", handleClick);
-  return () => grid.removeEventListener("click", handleClick);
-}, []);
+      rotate();
+    };
 
+    /* ---------- Swipe / Drag Support ---------- */
+    const handlePointerDown = (event) => {
+      startX = event.clientX;
+    };
+
+    const handlePointerUp = (event) => {
+      const diff = event.clientX - startX;
+
+      // Ignore tiny accidental drags
+      if (Math.abs(diff) < 40) return;
+
+      // Swipe right → Previous
+      if (diff > 0) {
+        indexRef.current =
+          (indexRef.current - 1 + total) % total;
+      }
+
+      // Swipe left → Next
+      else {
+        indexRef.current =
+          (indexRef.current + 1) % total;
+      }
+
+      rotate();
+    };
+
+    grid.addEventListener("click", handleClick);
+    grid.addEventListener("pointerdown", handlePointerDown);
+    grid.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      grid.removeEventListener("click", handleClick);
+      grid.removeEventListener("pointerdown", handlePointerDown);
+      grid.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, []);
 
   return (
     <section aria-label="Projects">
@@ -49,97 +140,22 @@ export default function Projects() {
       <h2 className="project-title">Projects</h2>
 
       <div className="projects-grid" ref={gridRef}>
-        <article className="project-card">
-          <h3>Abstractive-Summary</h3>
-          <p>
-            Developed an AI-powered text summarization tool using BART, capable of generating concise, human-readable summaries from long documents. Implemented a Gradio interface for input and output, and fine-tuned model parameters to produce coherent, abstractive summaries while preserving core insights.
-          </p>
-          <a
-            href="https://ritikashetty777.github.io/Abstractive-Summary/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            View GitHub Repository
-          </a>
-        </article>
+        {projectsData.map((project, index) => (
+          <article className="project-card" key={index}>
+            <h3>{project.title}</h3>
 
-        <article className="project-card">
-          <h3>AI-Embedding-of-History</h3>
-          <p>
-            🧠 AI Semantic Search on History Articles A lightweight end-to-end semantic search engine built using web scraping → AI summaries → embeddings → MongoDB vector search → FastAPI → simple frontend UI.
-          </p>
-          <a
-            href="https://ritikashetty777.github.io/AI-Embedding-of-History/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            View GitHub Repository
-          </a>
-        </article>
+            <p>{project.description}</p>
 
-        <article className="project-card">
-          <h3>BlueMesh-Optimized-Sensor-Network-For-Reliable-Pipeline-Fault-Detection</h3>
-          <p>
-            AI-driven IoT system for real-time water pipeline leak and crack detection. Uses acoustic, flow, and pressure sensors with YOLOv5 vision and FFT analysis on Raspberry Pi. Faults are mapped via GIS and alerts are sent through LoRa/GSM and Telegram for fast, efficient maintenance.
-          </p>
-          <a
-            href="https://ritikashetty777.github.io/BlueMesh-Optimized-Sensor-Network-For-Reliable-Pipeline-Fault-Detection-/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            View GitHub Repository
-          </a>
-        </article>
-
-        <article className="project-card">
-          <h3>Skinntel-AI</h3>
-          <p>
-            Built a system to detect early skin disease patterns using image
-            preprocessing and feature extraction techniques. Improved
-            diagnostic accuracy through standardized grayscale inputs.
-          </p>
-          <a
-            href="https://ritikashetty777.github.io/SKINNTEL-AI/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            View GitHub Repository
-          </a>
-        </article>
-
-        <article className="project-card">
-          <h3>MLP_Face_Recognition</h3>
-          <p>
-            This project implements a Face Recognition system using a Multi-Layer Perceptron (MLP) neural network combined with Principal Component Analysis (PCA) and Linear Discriminant Analysis (LDA) for feature extraction.
-          </p>
-          <a
-            href="https://ritikashetty777.github.io/MLP_Face_Recognition_/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            View GitHub Repository
-          </a>
-        </article>
-
-        <article className="project-card">
-          <h3>Cooksy-recipe-app</h3>
-          <p>
-            Welcome to Cooksy — where every recipe tells a story! Whether you're a home cook or a passionate foodie, Cooksy provides the perfect platform to explore, create, and share recipes.
-          </p>
-          <a
-            href="https://ritikashetty777.github.io/Cooksy-recipe-app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            View GitHub Repository
-          </a>
-        </article>
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-link"
+            >
+              View GitHub Repository
+            </a>
+          </article>
+        ))}
       </div>
     </section>
   );

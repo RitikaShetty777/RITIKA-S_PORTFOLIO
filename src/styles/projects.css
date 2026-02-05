@@ -130,7 +130,18 @@ section[aria-label="Projects"] {
      PROJECT SECTION – MOBILE FIX
      ================================ */
 
-  section[aria-label="Projects"] {
+  h1.hero-name {
+    /* Option A: Force one line (text might go off-screen if very long) */
+    white-space: nowrap;
+    
+    /* Option B: Shrink text slightly to fit better (Recommended) */
+    font-size: 2.5rem; 
+    
+    /* Option C: Let the browser decide the best fit */
+    /* font-size: 9vw; */
+  }
+  
+     section[aria-label="Projects"] {
     margin-top: 2rem;
     margin-bottom: 10rem;
   }
