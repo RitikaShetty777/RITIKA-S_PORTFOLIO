@@ -2,8 +2,7 @@ import { useEffect, useRef } from "react";
 import "../styles/projects.css";
 
 /* =====================================
-   PROJECT DATA (Reviewer Fix Applied)
-   Refactored into scalable array
+   PROJECT DATA (Refactor Fixed)
 ===================================== */
 
 const projectsData = [
@@ -13,14 +12,12 @@ const projectsData = [
       "Developed an AI-powered text summarization tool using BART, capable of generating concise, human-readable summaries from long documents.",
     link: "https://ritikashetty777.github.io/Abstractive-Summary/",
   },
-
   {
     title: "AI-Embedding-of-History",
     description:
       "Lightweight semantic search engine built using embeddings, MongoDB vector search, FastAPI, and frontend UI integration.",
     link: "https://ritikashetty777.github.io/AI-Embedding-of-History/",
   },
-
   {
     title:
       "BlueMesh-Optimized-Sensor-Network-For-Reliable-Pipeline-Fault-Detection",
@@ -29,22 +26,18 @@ const projectsData = [
     link:
       "https://ritikashetty777.github.io/BlueMesh-Optimized-Sensor-Network-For-Reliable-Pipeline-Fault-Detection-/",
   },
-
   {
     title: "Skinntel-AI",
     description:
       "System to detect early skin disease patterns using image preprocessing and feature extraction techniques.",
     link: "https://ritikashetty777.github.io/SKINNTEL-AI/",
   },
-
   {
     title: "MLP_Face_Recognition",
     description:
       "Face recognition system using PCA, LDA and Multi-Layer Perceptron neural networks for feature extraction.",
-    link:
-      "https://ritikashetty777.github.io/MLP_Face_Recognition_/",
+    link: "https://ritikashetty777.github.io/MLP_Face_Recognition_/",
   },
-
   {
     title: "Cooksy-recipe-app",
     description:
@@ -53,9 +46,14 @@ const projectsData = [
   },
 ];
 
+/* =====================================
+   COMPONENT
+===================================== */
+
 export default function Projects() {
   const gridRef = useRef(null);
   const indexRef = useRef(0);
+  const startXRef = useRef(0);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -64,49 +62,39 @@ export default function Projects() {
     const total = projectsData.length;
     const step = 360 / total;
 
-    let startX = 0;
-
-    /* ---------- Rotate Function ---------- */
+    /* Rotate carousel */
     const rotate = () => {
       grid.style.transform = `rotateY(${-indexRef.current * step}deg)`;
     };
 
-    /* ---------- Click Navigation ---------- */
+    /* Click navigation (left/right half) */
     const handleClick = (event) => {
       const rect = grid.getBoundingClientRect();
       const clickX = event.clientX - rect.left;
-      const midpoint = rect.width / 2;
 
-      if (clickX < midpoint) {
-        indexRef.current =
-          (indexRef.current - 1 + total) % total;
-      }
-
-      else {
-        indexRef.current =
-          (indexRef.current + 1) % total;
+      if (clickX < rect.width / 2) {
+        indexRef.current = (indexRef.current - 1 + total) % total;
+      } else {
+        indexRef.current = (indexRef.current + 1) % total;
       }
 
       rotate();
     };
 
+    /* Pointer swipe navigation */
     const handlePointerDown = (event) => {
-      startX = event.clientX;
+      startXRef.current = event.clientX;
     };
 
     const handlePointerUp = (event) => {
-      const diff = event.clientX - startX;
+      const diff = event.clientX - startXRef.current;
 
       if (Math.abs(diff) < 40) return;
 
       if (diff > 0) {
-        indexRef.current =
-          (indexRef.current - 1 + total) % total;
-      }
-
-      else {
-        indexRef.current =
-          (indexRef.current + 1) % total;
+        indexRef.current = (indexRef.current - 1 + total) % total;
+      } else {
+        indexRef.current = (indexRef.current + 1) % total;
       }
 
       rotate();
@@ -133,9 +121,7 @@ export default function Projects() {
         {projectsData.map((project, index) => (
           <article className="project-card" key={index}>
             <h3>{project.title}</h3>
-
             <p>{project.description}</p>
-
             <a
               href={project.link}
               target="_blank"
