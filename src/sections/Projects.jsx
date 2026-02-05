@@ -53,10 +53,6 @@ const projectsData = [
   },
 ];
 
-/* =====================================
-   COMPONENT
-===================================== */
-
 export default function Projects() {
   const gridRef = useRef(null);
   const indexRef = useRef(0);
@@ -81,13 +77,11 @@ export default function Projects() {
       const clickX = event.clientX - rect.left;
       const midpoint = rect.width / 2;
 
-      // Left side click → Previous project
       if (clickX < midpoint) {
         indexRef.current =
           (indexRef.current - 1 + total) % total;
       }
 
-      // Right side click → Next project
       else {
         indexRef.current =
           (indexRef.current + 1) % total;
@@ -96,7 +90,6 @@ export default function Projects() {
       rotate();
     };
 
-    /* ---------- Swipe / Drag Support ---------- */
     const handlePointerDown = (event) => {
       startX = event.clientX;
     };
@@ -104,16 +97,13 @@ export default function Projects() {
     const handlePointerUp = (event) => {
       const diff = event.clientX - startX;
 
-      // Ignore tiny accidental drags
       if (Math.abs(diff) < 40) return;
 
-      // Swipe right → Previous
       if (diff > 0) {
         indexRef.current =
           (indexRef.current - 1 + total) % total;
       }
 
-      // Swipe left → Next
       else {
         indexRef.current =
           (indexRef.current + 1) % total;
